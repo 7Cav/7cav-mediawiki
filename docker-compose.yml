@@ -2,7 +2,7 @@ version: "3"
 services:
   mediawiki:
     image: mediawiki:stable
-    container_name: 7cav_wiki
+    container_name: wiki
     restart: always
     ports:
       - 8080:80
@@ -21,7 +21,7 @@ services:
       - wiki
   parsoid:
     image: thenets/parsoid:0.11
-    container_name: 7cav_wiki_parsoid
+    container_name: wiki_parsoid
     restart: always
     ports:
       - 8080:8000
@@ -31,7 +31,7 @@ services:
       - wiki
   wikidb:
     image: mariadb:latest
-    container_name: 7cav_wiki_db
+    container_name: wiki_db
     restart: always
     environment:
       # @see https://phabricator.wikimedia.org/source/mediawiki/browse/master/includes/DefaultSettings.php
@@ -43,7 +43,7 @@ services:
       - wiki
   elasticsearch:
     image: elasticsearch:6.8.13
-    container_name: 7cav_wiki_elastic
+    container_name: wiki_elastic
     ports:
       - 9200:9200
       - 9300:9300
@@ -56,6 +56,3 @@ networks:
     external: true
     name: edge
   wiki:
-    name: wiki
-    external: false
-    driver: overlay2
