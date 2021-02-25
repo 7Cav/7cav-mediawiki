@@ -24,7 +24,7 @@ services:
     container_name: wiki_parsoid
     restart: always
     ports:
-      - 8080:8000
+      - 8142:8142
     environment:
       - PARSOID_DOMAIN_localhost=http://wiki.7cav.us/api.php"
     networks:
