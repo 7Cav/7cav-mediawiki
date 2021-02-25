@@ -1,0 +1,61 @@
+version: "3"
+services:
+  mediawiki:
+    image: mediawiki:stable
+    container_name: 7cav_wiki
+    restart: always
+    ports:
+      - 8080:80
+    links:
+      - wikidb
+      - parsoid
+      - elasticsearch
+    volumes:
+      - /opt/wiki/www:/var/www
+      # After initial setup, download LocalSettings.php to the same directory as
+      # this yaml and uncomment the following line and use compose to restart
+      # the mediawiki service
+      # - ./LocalSettings.php:/var/www/html/LocalSettings.php
+    networks:
+      - edge
+      - wiki
+  parsoid:
+    image: thenets/parsoid:0.11
+    container_name: 7cav_wiki_parsoid
+    restart: always
+    ports:
+      - 8080:8000
+    environment:
+      - PARSOID_DOMAIN_localhost=http://wiki.7cav.us/api.php"
+    networks:
+      - wiki
+  wikidb:
+    image: mariadb:latest
+    container_name: 7cav_wiki_db
+    restart: always
+    environment:
+      # @see https://phabricator.wikimedia.org/source/mediawiki/browse/master/includes/DefaultSettings.php
+      MYSQL_DATABASE: my_wiki
+      MYSQL_USER: wikiuser
+      MYSQL_PASSWORD: example
+      MYSQL_RANDOM_ROOT_PASSWORD: "yes"
+    networks:
+      - wiki
+  elasticsearch:
+    image: elasticsearch:6.8.13
+    container_name: 7cav_wiki_elastic
+    ports:
+      - 9200:9200
+      - 9300:9300
+    environment:
+      - discovery.type=single-node
+    networks:
+      - wiki
+networks:
+  edge:
+    external: true
+    name: edge
+  wiki:
+    name: wiki
+    external: false
+    driver: overlay2
