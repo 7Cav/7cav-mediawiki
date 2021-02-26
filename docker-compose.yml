@@ -1,21 +1,24 @@
 version: "3"
 services:
   mediawiki:
-    image: mediawiki:stable
+    image: bitnami/mediawiki:latest
     container_name: wiki
     restart: always
     ports:
       - 8080:80
+      - 443:8443
     links:
       - wikidb
       - parsoid
       - elasticsearch
     volumes:
-      - /opt/wiki/www:/var/www
+      - /opt/wiki:/bitnami/mediawiki
       # After initial setup, download LocalSettings.php to the same directory as
       # this yaml and uncomment the following line and use compose to restart
       # the mediawiki service
       # - ./LocalSettings.php:/var/www/html/LocalSettings.php
+    depends_on:
+      - wikidb
     networks:
       - edge
       - wiki
@@ -39,6 +42,8 @@ services:
       MYSQL_USER: wikiuser
       MYSQL_PASSWORD: example
       MYSQL_RANDOM_ROOT_PASSWORD: "yes"
+    volumes:
+      - db-data:/var/lib/mysql
     networks:
       - wiki
   elasticsearch:
@@ -56,3 +61,6 @@ networks:
     external: true
     name: edge
   wiki:
+volumes:
+  db-data:
+    driver: local
