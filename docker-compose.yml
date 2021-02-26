@@ -12,6 +12,8 @@ services:
       - MEDIAWIKI_DATABASE_USER=bn_mediawiki
       - MEDIAWIKI_DATABASE_NAME=bitnami_mediawiki
       - MEDIAWIKI_DATABASE_PASSWORD=bitnami
+      - LETSENCRYPT_HOST=test.7cav.us
+      - VIRTUAL_HOST=test.7cav.us
       - ALLOW_EMPTY_PASSWORD=no
     links:
       - wikidb
