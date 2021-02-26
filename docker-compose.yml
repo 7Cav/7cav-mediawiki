@@ -15,6 +15,12 @@ services:
       - LETSENCRYPT_HOST=test.7cav.us
       - VIRTUAL_HOST=test.7cav.us
       - ALLOW_EMPTY_PASSWORD=no
+      - MEDIAWIKI_ENABLE_HTTPS=yes
+      - MEDIAWIKI_WIKI_NAME=7th Cavalry Wiki
+      - MEDIAWIKI_HOST=test.7cav.us
+      - MEDIAWIKI_EMAIL=apache@wiki.7cav.us
+      - MEDIAWIKI_USERNAME=user
+      - MEDIAWIKI_PASSWORD=password123
     links:
       - wikidb
       - parsoid
