@@ -6,7 +6,6 @@ services:
     restart: always
     ports:
       - 8080:80
-      - 443:8443
     links:
       - wikidb
       - parsoid
